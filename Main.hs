@@ -73,6 +73,7 @@ capriGlobalCommand :: CommandUI GlobalFlags
 capriGlobalCommand = CommandUI {
     commandName         = "",
     commandSynopsis     = "",
+    commandNotes        = Nothing,
     commandUsage        = \_ ->
          "This program provides a wrapper over cabal-install "
       ++ "to operate in project-private mode.\n",
@@ -123,6 +124,7 @@ importCommand = CommandUI {
  ,commandSynopsis     = "Build another package with respect to this package's private " ++
                         "packages database and installation path"
  ,commandUsage        = (++ " import directory -- <cabal or Setup command options>")
+ ,commandNotes        = Nothing
  ,commandDescription  = Just $ \pname -> 
     "Use this command to build another package with respect to this package private\n" ++
     "packages database. Use double-hyphen (--) before  any build program parameters\n" ++
@@ -180,6 +182,7 @@ xCommand cmd = CommandUI {
   commandName         = cmd
  ,commandSynopsis     = "Short-cut for cabal " ++ cmd ++ " command"
  ,commandUsage        = (++ " " ++ cmd)
+ ,commandNotes        = Nothing
  ,commandDescription  = Just $ \pname -> "This command is equivalent to:\n\n" ++
                                          "     " ++ pname ++ " cabal -- " ++ cmd ++ "\n\n" ++
                                          "with package database and install prefix " ++
@@ -205,6 +208,7 @@ cabalCommand = CommandUI {
  ,commandSynopsis     = "Invoke the cabal-install or Setup.{hs|lhs} program to run arbitrary " ++
                         "action on private packages"
  ,commandUsage        = (++ " cabal -- <cabal or Setup command options>")
+ ,commandNotes        = Nothing
  ,commandDescription  = Just $ \pname -> 
     "Use this command to invoke arbitrary action of cabal-install on the privately\n" ++ 
     "installed packages.  Use double-hyphen (--)  before any  cabal  parameters to\n" ++ 
@@ -253,6 +257,7 @@ ghcpkgCommand = CommandUI {
   commandName         = "ghc-pkg"
  ,commandSynopsis     = "Invoke the ghc-pkg program to run arbitrary action on private packages"
  ,commandUsage        = (++ " ghc-pkg -- <ghc-pkg command options>")
+ ,commandNotes        = Nothing
  ,commandDescription  = Just $ \pname -> 
     "Use this command to invoke arbitrary action of ghc-pkg on the privately installed\n" ++
     "packages.  Use  double-hyphen  (--)   before  any  ghc-pkg  parameters  to  avoid\n" ++
@@ -277,6 +282,7 @@ cloneCommand = CommandUI {
   commandName         = "clone"
  ,commandSynopsis     = "Clone package(s) installed publicly into the private packages database"
  ,commandUsage        = (++ " clone <package name> [...<package name>]")
+ ,commandNotes        = Nothing
  ,commandDescription  = Just $ \pname -> 
     "Use this command to install previously  compiled package(s)  from  global or user\n" ++
     "database into the private database via running ghc-pkg. Package files (libraries,\n" ++
@@ -303,6 +309,7 @@ listCommand = CommandUI {
   commandName         = "list"
  ,commandSynopsis     = "List packages installed privately"
  ,commandUsage        = (++ " list")
+ ,commandNotes        = Nothing
  ,commandDescription  = Just $ \pname -> 
     "Use this command to list packages installed privately for this project.\n" ++ 
     pname ++ " will run the ghc-pkg utility to perform this action.\n\n"
@@ -326,6 +333,7 @@ bootstrapCommand = CommandUI {
   commandName         = "bootstrap"
  ,commandSynopsis     = "Bootstrap private packages configuration"
  ,commandUsage        = (++ " bootstrap")
+ ,commandNotes        = Nothing
  ,commandDescription  = Just $ \pname -> 
     "Use this command to create an empty per-project database of packages.\n" ++ 
     pname ++ " will clone the following packages into the per-project packages directory: \n\n" ++
@@ -378,6 +386,8 @@ privateProcess' cmd = do
    ,std_in = Inherit
    ,std_out = Inherit
    ,std_err = Inherit
+   ,create_group = False
+   ,delegate_ctlc = False
    ,close_fds = False
   }
 
@@ -393,6 +403,8 @@ publicProcess cmd dir = return CreateProcess {
    ,std_in = Inherit
    ,std_out = Inherit
    ,std_err = Inherit
+   ,create_group = False
+   ,delegate_ctlc = False
    ,close_fds = False
 }
 
