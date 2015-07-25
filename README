@@ -1,5 +1,6 @@
-Capri (abbreviation of CAbal PRIvate) is a wrapper program on top of cabal-install
-to operate it in project-private mode. In this mode, there is no global or user
-package databases; only one package database is defined, private to the project,
-located under the root directory of a project. 
+Capri (abbreviation of CAbal PRIvate) is a wrapper program on top of
+cabal-install to operate it in project-private mode. In this mode,
+there is no global or user package databases; only one package
+database is defined, private to the project, located under the root
+directory of a project.
 
